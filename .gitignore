@@ -1,0 +1,16 @@
+
+venv/
+
+htmlcov/
+
+\.idea/
+
+mongoutils/__pycache__/
+
+parsers/__pycache__/
+
+resources/__pycache__/
+
+test/__pycache__/
+
+\.coverage
