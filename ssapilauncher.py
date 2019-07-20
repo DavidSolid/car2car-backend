@@ -8,6 +8,7 @@ from resources.userrents import *
 from resources.receivedrents import *
 from resources.specificuserrent import *
 from resources.specificreceivedrent import *
+from resources.globalstats import *
 
 app = Flask(__name__)
 app.config['BUNDLE_ERRORS'] = True
@@ -23,6 +24,7 @@ api.add_resource(UserActiveCars, "/cars/activebyuser/<string:userId>/<x>/<y>")
 api.add_resource(DateActiveCars, "/cars/activebydate/<string:date>/<x>/<y>")
 # gamification
 api.add_resource(UserStats, "/gamification/<string:userId>")
+api.add_resource(GlobalStats, "/gamification")
 # transactions
 api.add_resource(UserRents, "/rents/<string:userId>")
 api.add_resource(ReceivedRents, "/rents/received/<string:userId>")

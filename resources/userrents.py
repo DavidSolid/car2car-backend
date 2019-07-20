@@ -12,11 +12,12 @@ class UserRents(Resource):
 
     def __init__(self):
         self.db = MongoClient("maincontainer", "transactions").connect()
+        self.db_cars = MongoClient("maincontainer", "cars").connect()  # to be used
 
     def post(self, userId):  # insert transaction #tocheck if car is not in use and is in sharing
         rent = RentSchema().parse()
         toinsert = {"author": userId}
-        for k in ["addressedto", "carId", "isAccepted", "isEnded"]:
+        for k in ["addressedto", "carId", "isAccepted", "hasKey", "isEnded"]:  # aggiungere hasKey
             toinsert[k] = rent[k]
         toinsert["date"] = json_util.loads(json.dumps(rent["date"]))
         try:
@@ -27,7 +28,7 @@ class UserRents(Resource):
 
         return {"executed": True}
 
-    def get(self, userId):  # get made not ended transactions
+    def get(self, userId):  # get made not ended transactions #and all rents?
         query = {"author": userId, "isEnded": False}
         try:
             results = self.db.find(query)

@@ -42,4 +42,6 @@ class UserCars(Resource):
             print(e)
             return {"executed": False}
         # return Response(json.dumps({"executed": True}, default=json_util.default), mimetype="application/json")
-        return {"executed": True}
+        return Response(
+            json.dumps({"executed": True, "result": toinsert}, default=json_util.default), mimetype="application/json"
+        )

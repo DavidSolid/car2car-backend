@@ -19,7 +19,7 @@ class TestSpecificReceivedRent(TestCase):
                "carId": "5d0a05e5987bbf80555a8a06"}
 
     def test_put_invalid_objid(self):
-        with self.assertRaises(InvalidId):
+        with self.assertRaises(BadRequest):
             SpecificReceivedRent().put("user", "ehehe")
 
     #@patch('resources.specificreceivedrent.SpecificReceivedRent.db.find_one', new=Mock(side_effect=PyMongoError))

@@ -4,8 +4,10 @@ from unittest .mock import Mock
 from resources.usercars import UserCars
 import json
 from pymongo.errors import PyMongoError
+from parsers.carsparser import CarSchema
 
 
+@patch('mongoutils.mongoclient.MongoClient.connect', new=Mock())
 class TestUserCars(TestCase):
     """test class for usercars resource"""
     carsample = {
@@ -44,19 +46,26 @@ class TestUserCars(TestCase):
 
     @patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
     def test_post_valid_schema(self):
-        with patch('resources.usercars.UserCars.db.insert', Mock(return_value="")):
-            result = UserCars().post("nomeacaso")
+        to_use = UserCars()
+        to_use.db.insert = Mock(return_value="")
+        #with patch('resources.usercars.UserCars.db.insert', Mock(return_value="")):
+        result = UserCars().post("nomeacaso")
         self.assertEqual(result, {"executed": True})
 
-    @patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
-    def test_post_insertion_success(self, inserted=None):
+    #@patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
+    def test_post_insertion_success(self):
 
+        inserted = None
         def insertfunc(insert):
             nonlocal inserted
             inserted = insert
 
-        with patch('resources.usercars.UserCars.db.insert', Mock(side_effect=insertfunc)):
-            result = UserCars().post("nomeacaso")
+        to_use = UserCars()
+        to_use.db.insert = Mock(side_effect=insertfunc)
+
+        #with patch('resources.usercars.UserCars.db.insert', Mock(side_effect=insertfunc)):
+        with patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=self.carsample)):
+            UserCars().post("nomeacaso")
 
         updatedsample = self.carsample.copy()
         updatedsample["proprietarioID"] = "nomeacaso"
@@ -64,6 +73,8 @@ class TestUserCars(TestCase):
 
     @patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
     def test_post_db_error(self):
-        with patch('resources.usercars.UserCars.db.insert', Mock(side_effect=PyMongoError("server error"))):
-            result = UserCars().post("nomeacaso")
+        to_use = UserCars()
+        to_use.db.insert = Mock(side_effect=PyMongoError("server error"))
+        #with patch('resources.usercars.UserCars.db.insert', Mock(side_effect=PyMongoError("server error"))):
+        result = UserCars().post("nomeacaso")
         self.assertEqual(result, {"executed": False})
