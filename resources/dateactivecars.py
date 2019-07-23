@@ -23,7 +23,7 @@ class DateActiveCars(Resource):
             return {"executed": False}
 
         query = {
-            "inuso": {"$ne": "true"}, "sharing.inizio": {"$lte": cdate}, "sharing.fine": {"$gte": cdate},
+            "inuso": False, "sharing.inizio": {"$lte": cdate}, "sharing.fine": {"$gte": cdate},
             "posizione": {
                 "$near": {
                     "$geometry": {
