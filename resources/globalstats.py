@@ -15,7 +15,7 @@ class GlobalStats(Resource):
 
     def get(self):
         try:
-            cursor = self.db.find({}).sort("exp",DESCENDING)
+            cursor = self.db.find({}).sort("exp", DESCENDING)
         except PyMongoError as e:
             print(e)
             return abort(404)

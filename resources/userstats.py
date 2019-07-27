@@ -4,6 +4,7 @@ from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
 import json
 from bson import json_util
+from datetime import datetime
 
 
 class UserStats(Resource):
@@ -22,9 +23,12 @@ class UserStats(Resource):
             return {"executed": False}
 
         if results is not None:  # is present user stats?
-            return {"data": results}
+            return Response(
+                json.dumps({"data": results}, default=json_util.default),
+                mimetype="application/json"
+            )
         else:  # creating user stats
-            obj = {"user": userId, "exp": 0}
+            obj = {"user": userId, "exp": 0, "nSent": 0, "nReceived": 0, "nHours": 0}
             try:
                 self.db.insert(obj)
             except PyMongoError as e:
@@ -36,5 +40,24 @@ class UserStats(Resource):
                 mimetype="application/json"
             )
 
-    def put(self, userId):
-        pass
+    def put(self, userId):  # daily reward
+        try:
+            data = self.db.find_one({"user": userId})
+        except PyMongoError as e:
+            print(e)
+            return {"executed": False}
+
+        if not data:
+            return {"executed": False}
+
+        if "lastReward" in data:
+            delta = (datetime.utcnow().timestamp() - data["lastReward"].timestamp()) / 3600
+            print(delta)
+            if delta >= 24:
+                self.db.update_one({"user": userId}, {"$inc": {"exp": 200}, "$set": {"lastReward": datetime.utcnow()}})
+                return {"executed": True}
+            else:
+                return {"executed": False}
+        else:
+            self.db.update_one({"user": userId}, {"$inc": {"exp": 200}, "$set": {"lastReward": datetime.utcnow()}})
+            return {"executed": True}

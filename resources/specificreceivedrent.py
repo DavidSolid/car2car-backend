@@ -4,6 +4,7 @@ from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
 from bson.errors import InvalidId
 from datetime import datetime
+import math
 
 
 class SpecificReceivedRent(Resource):
@@ -12,6 +13,7 @@ class SpecificReceivedRent(Resource):
     def __init__(self):
         self.db = MongoClient("maincontainer", "transactions").connect()
         self.db_cars = MongoClient("maincontainer", "cars").connect()
+        self.db_game = MongoClient("maincontainer", "gameinfo").connect()
 
     def put(self, userId, objId):  # confirm transaction
         # RentSchema
@@ -105,7 +107,18 @@ class SpecificReceivedRent(Resource):
                     self.db_cars.update_one(
                         {"_id": ObjectId(cursor["carId"])}, {"$set": {"inuso": False}}
                     )
-                    # update points
+
+                    # update points # what if doesn't exists?
+                    last_rent = self.db.find_one({"_id": ObjectId(objId)})
+                    receiver = {"user": userId}
+                    sender = {"user": last_rent["author"]}
+                    hours = math.ceil((last_rent["endDate"].timestamp() - last_rent["startDate"].timestamp()) / 3600)
+                    self.db_game.update_one(sender, {"$inc": {"nHours": hours, "nSent": 1, "exp": 20*hours}})
+                    self.db_game.update_one(receiver, {"$inc": {"nReceived": 1, "exp": 40*hours}})
+
+                    # update missions
+                    # todo
+
             except PyMongoError as e:
                 print(e)
                 return {"executed": False}
