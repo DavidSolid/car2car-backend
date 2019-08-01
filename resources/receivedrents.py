@@ -12,8 +12,8 @@ class ReceivedRents(Resource):
     def __init__(self):
         self.db = MongoClient("maincontainer", "transactions").connect()
 
-    def get(self, userId):  # get received not ended transactions
-        query = {"addressedto": userId, "isEnded": False}
+    def get(self, userId):  # get received transactions
+        query = {"addressedto": userId}
         try:
             results = self.db.find(query)
         except PyMongoError as e:

@@ -28,8 +28,8 @@ class UserRents(Resource):
 
         return {"executed": True}
 
-    def get(self, userId):  # get made not ended transactions #and all rents?
-        query = {"author": userId, "isEnded": False}
+    def get(self, userId):  # get made transactions
+        query = {"author": userId}
         try:
             results = self.db.find(query)
         except PyMongoError as e:
