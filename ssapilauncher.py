@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from resources.usercars import *
+from resources.specificusercar import *
 from resources.useractivecars import *
 from resources.dateactivecars import *
 from resources.userstats import *
@@ -19,7 +20,7 @@ api = Api(app)
 # cars
 # api.add_resource(ListofCarsinRange, "/cars")
 api.add_resource(UserCars, "/cars/<string:userId>")
-# api.add_resource(SpecificCar,"/cars/<string:objId>")
+api.add_resource(SpecificUserCar, "/cars/<string:userId>/<string:objId>")
 api.add_resource(UserActiveCars, "/cars/activebyuser/<string:userId>/<x>/<y>")
 api.add_resource(DateActiveCars, "/cars/activebydate/<string:date>/<x>/<y>")
 # gamification
