@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from resources.baseresource import ApiResource
 from flask import Response
 from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
@@ -6,11 +7,10 @@ from bson import json_util
 import json
 
 
-class ReceivedRents(Resource):
+class ReceivedRents(ApiResource):
     """rest resource for rents received by a user"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "transactions").connect()
+    db = MongoClient("maincontainer", "transactions").connect()
 
     def get(self, userId):  # get received transactions
         query = {"addressedto": userId}

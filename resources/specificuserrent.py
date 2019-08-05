@@ -1,4 +1,5 @@
 from flask_restful import Resource, abort
+from resources.baseresource import ApiResource
 from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
 from bson.objectid import ObjectId
@@ -6,12 +7,11 @@ from bson.errors import InvalidId
 from datetime import datetime
 
 
-class SpecificUserRent(Resource):
+class SpecificUserRent(ApiResource):
     """rest resource for rent identified by objId"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "transactions").connect()
-        self.db_cars = MongoClient("maincontainer", "cars").connect()
+    db = MongoClient("maincontainer", "transactions").connect()
+    db_cars = MongoClient("maincontainer", "cars").connect()
 
     def put(self, userId, objId):  # confirm key received
         try:

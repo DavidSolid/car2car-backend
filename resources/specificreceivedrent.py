@@ -1,4 +1,5 @@
 from flask_restful import Resource, abort, reqparse
+from resources.baseresource import ApiResource
 from bson.objectid import ObjectId
 from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
@@ -7,13 +8,37 @@ from datetime import datetime
 import math
 
 
-class SpecificReceivedRent(Resource):
+class SpecificReceivedRent(ApiResource):
     """rest resource for rent identified by objId"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "transactions").connect()
-        self.db_cars = MongoClient("maincontainer", "cars").connect()
-        self.db_game = MongoClient("maincontainer", "gameinfo").connect()
+    db = MongoClient("maincontainer", "transactions").connect()
+    db_cars = MongoClient("maincontainer", "cars").connect()
+    db_game = MongoClient("maincontainer", "gameinfo").connect()
+    db_miss = MongoClient("maincontainer", "missions").connect()
+
+    def updateMissions(self, user, var, amount):
+        missions = self.db_miss.find({"vref": var})
+        info = self.db_game.find_one({"user": user})
+        if "missions" not in info:
+            info["missions"] = {}
+        for m in missions:
+            mid = str(m["_id"])
+            if mid in info["missions"]:
+                # update status
+                if info["missions"][mid]["value"] + amount >= m["threshold"]:
+                    info["missions"][mid]["complete"] = True
+                    info["exp"] += m["prize"]
+                else:
+                    info["missions"][mid]["value"] += amount
+            else:
+                pass
+                # insert status
+                info["missions"][mid] = {
+                    "value": amount,
+                    "complete": False
+                }
+                if amount >= m["threshold"]:
+                    info["missions"][mid]["complete"] = True
 
     def put(self, userId, objId):  # confirm transaction
         # RentSchema
@@ -117,7 +142,14 @@ class SpecificReceivedRent(Resource):
                     self.db_game.update_one(receiver, {"$inc": {"nReceived": 1, "exp": 40*hours}})
 
                     # update missions
-                    # todo
+                    # sender
+                    sender = last_rent["author"]
+                    self.updateMissions(sender, "nHours", hours)
+                    self.updateMissions(sender, "nSent", 1)
+                    self.updateMissions(sender, "exp", 20*hours)
+                    # receiver
+                    self.updateMissions(userId, "nReceiver", 1)
+                    self.updateMissions(userId, "exp", 40*hours)
 
             except PyMongoError as e:
                 print(e)

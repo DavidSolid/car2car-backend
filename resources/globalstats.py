@@ -1,5 +1,6 @@
 from flask import Response
 from flask_restful import Resource, abort
+from resources.baseresource import ApiResource
 from mongoutils.mongoclient import MongoClient
 from pymongo import DESCENDING
 from pymongo.errors import PyMongoError
@@ -7,11 +8,10 @@ import json
 from bson import json_util
 
 
-class GlobalStats(Resource):
+class GlobalStats(ApiResource):
     """rest resource for stats leaderboard"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "gameinfo").connect()
+    db = MongoClient("maincontainer", "gameinfo").connect()
 
     def get(self):
         try:

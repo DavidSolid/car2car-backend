@@ -5,13 +5,13 @@ import json
 from bson import json_util
 from mongoutils.mongoclient import MongoClient
 from parsers.carsparser import CarSchema
+from resources.baseresource import ApiResource
 
 
-class UserCars(Resource):
+class UserCars(ApiResource):
     """rest resource for cars owned by a specific user"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "cars").connect()
+    db = MongoClient("maincontainer", "cars").connect()
 
     def get(self, userId):
         query = {"proprietarioID": userId}

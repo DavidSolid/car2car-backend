@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from resources.baseresource import ApiResource
 from flask import Response
 from mongoutils.mongoclient import MongoClient
 from pymongo.errors import PyMongoError
@@ -7,11 +8,10 @@ from bson import json_util
 from datetime import datetime
 
 
-class UserStats(Resource):
+class UserStats(ApiResource):
     """rest resource for gamification stats of a user"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "gameinfo").connect()
+    db = MongoClient("maincontainer", "gameinfo").connect()
 
     def get(self, userId):
         query = {"user": userId}

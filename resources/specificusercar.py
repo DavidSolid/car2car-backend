@@ -1,5 +1,6 @@
 from flask import Response, abort
 from flask_restful import Resource
+from resources.baseresource import ApiResource
 from pymongo.errors import PyMongoError
 import json
 from bson import json_util, ObjectId
@@ -8,11 +9,10 @@ from mongoutils.mongoclient import MongoClient
 from parsers.carsparser import CarSchema
 
 
-class SpecificUserCar(Resource):
+class SpecificUserCar(ApiResource):
     """rest resource for specific car owned by a specific user"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "cars").connect()
+    db = MongoClient("maincontainer", "cars").connect()
 
     def get(self, userId, objId):
         try:

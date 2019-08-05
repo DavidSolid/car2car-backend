@@ -5,13 +5,13 @@ import json
 from bson import json_util
 from datetime import datetime
 from mongoutils.mongoclient import MongoClient
+from resources.baseresource import ApiResource
 
 
-class DateActiveCars(Resource):
+class DateActiveCars(ApiResource):
     """rest resource for active cars during date ordered by distance from x,y point"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "cars").connect()
+    db = MongoClient("maincontainer", "cars").connect()
 
     def get(self, date, x, y):
         try:

@@ -1,16 +1,16 @@
 from flask import Response
 from flask_restful import Resource
+from resources.baseresource import ApiResource
 from pymongo.errors import PyMongoError
 import json
 from bson import json_util
 from mongoutils.mongoclient import MongoClient
 
 
-class UserActiveCars(Resource):
+class UserActiveCars(ApiResource):
     """rest resource for active cars owned by a user ordered by distance from x,y point"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "cars").connect()
+    db = MongoClient("maincontainer", "cars").connect()
 
     def get(self, userId, x, y):
         try:

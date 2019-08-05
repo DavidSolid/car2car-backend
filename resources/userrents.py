@@ -1,4 +1,5 @@
 from flask_restful import Resource
+from resources.baseresource import ApiResource
 from flask import Response
 from bson import json_util
 import json
@@ -7,12 +8,11 @@ from mongoutils.mongoclient import MongoClient
 from parsers.rentparser import RentSchema
 
 
-class UserRents(Resource):
+class UserRents(ApiResource):
     """rest resource for rents sent by a user"""
 
-    def __init__(self):
-        self.db = MongoClient("maincontainer", "transactions").connect()
-        self.db_cars = MongoClient("maincontainer", "cars").connect()  # to be used
+    db = MongoClient("maincontainer", "transactions").connect()
+    db_cars = MongoClient("maincontainer", "cars").connect()  # to be used
 
     def post(self, userId):  # insert transaction #tocheck if car is not in use and is in sharing
         rent = RentSchema().parse()
