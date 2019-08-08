@@ -8,6 +8,7 @@ from resources.receivedrents import *
 from resources.specificuserrent import *
 from resources.specificreceivedrent import *
 from resources.globalstats import *
+from resources.usermissionstats import *
 
 
 class EntrypointsMapper:
@@ -27,6 +28,7 @@ class EntrypointsMapper:
         # gamification
         self.api.add_resource(UserStats, "/gamification/<string:userId>")
         self.api.add_resource(GlobalStats, "/gamification")
+        self.api.add_resource(UserMissionStats, "/gamification/<string:userId>/missions")
 
         # transactions
         self.api.add_resource(UserRents, "/rents/<string:userId>")
