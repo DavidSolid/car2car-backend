@@ -33,7 +33,7 @@ class UserMissionStats(ApiResource):
                     mission["value"] = 0
                     mission["complete"] = False
             return Response(
-                json.dumps(missions, default=json_util.default),
+                json.dumps({"data": missions}, default=json_util.default),
                 mimetype="application/json"
             )
         else:
