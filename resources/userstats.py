@@ -6,6 +6,8 @@ from pymongo.errors import PyMongoError
 import json
 from bson import json_util
 from datetime import datetime
+import random
+import math
 
 
 class UserStats(ApiResource):
@@ -50,14 +52,16 @@ class UserStats(ApiResource):
         if not data:
             return {"executed": False}
 
+        level = math.floor(data["exp"]/100) + 1
+        gain = random.randrange((level - 1) * 100, level * 100)
         if "lastReward" in data:
             delta = (datetime.utcnow().timestamp() - data["lastReward"].timestamp()) / 3600
             print(delta)
             if delta >= 24:
-                self.db.update_one({"user": userId}, {"$inc": {"exp": 200}, "$set": {"lastReward": datetime.utcnow()}})
-                return {"executed": True}
+                self.db.update_one({"user": userId}, {"$inc": {"exp": gain}, "$set": {"lastReward": datetime.utcnow()}})
+                return {"executed": True, "gained": gain}
             else:
                 return {"executed": False}
         else:
-            self.db.update_one({"user": userId}, {"$inc": {"exp": 200}, "$set": {"lastReward": datetime.utcnow()}})
-            return {"executed": True}
+            self.db.update_one({"user": userId}, {"$inc": {"exp": gain}, "$set": {"lastReward": datetime.utcnow()}})
+            return {"executed": True, "gained": gain}
