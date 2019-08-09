@@ -31,7 +31,6 @@ class SpecificReceivedRent(ApiResource):
                 else:
                     info["missions"][mid]["value"] += amount
             else:
-                pass
                 # insert status
                 info["missions"][mid] = {
                     "value": amount,
@@ -39,6 +38,8 @@ class SpecificReceivedRent(ApiResource):
                 }
                 if amount >= m["threshold"]:
                     info["missions"][mid]["complete"] = True
+                    info["exp"] += m["prize"]
+        self.db_game.update_one({"user": user}, {"$set": info})
 
     def put(self, userId, objId):  # confirm transaction
         # RentSchema
@@ -156,3 +157,6 @@ class SpecificReceivedRent(ApiResource):
                 return {"executed": False}
 
             return {"executed": True}
+
+# if __name__ == "__main__":
+    # SpecificReceivedRent().updateMissions("test", "nHours", 100)

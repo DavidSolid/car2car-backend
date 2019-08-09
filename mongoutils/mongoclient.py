@@ -10,4 +10,4 @@ class MongoClient:
         self.collection = collection
 
     def connect(self):
-        return pymongo.MongoClient(self.URI)[self.db][self.collection]
+        return pymongo.MongoClient(self.URI, connect=False)[self.db][self.collection]
