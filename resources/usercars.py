@@ -30,7 +30,7 @@ class UserCars(ApiResource):
         car = CarSchema().parse()
         toinsert = {"produttore": car["produttore"]}
 
-        for k in ["modello", "targa", "posizione", "inuso"]:
+        for k in ["modello", "descrizione", "targa", "posizione", "inuso", "prezzo"]:
             toinsert[k] = car[k]
 
         toinsert["proprietarioID"] = userId
