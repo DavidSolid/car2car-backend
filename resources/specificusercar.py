@@ -33,4 +33,25 @@ class SpecificUserCar(ApiResource):
             )
 
     def delete(self, userId, objId):
-        pass
+        try:
+            cursor = self.db.find_one({"proprietarioID": userId, "_id": ObjectId(objId)})
+        except PyMongoError as e:
+            print(e)
+            return {"executed": False}
+        except InvalidId:
+            abort(400)
+            return
+
+        if cursor is None:
+            abort(404)
+        else:
+            if cursor["inuso"]:
+                return {"executed": False}
+            else:
+                try:
+                    self.db.delete_one({"_id": ObjectId(objId)})
+                except PyMongoError as e:
+                    print(e)
+                    return {"executed": False}
+
+                return {"executed": True}
