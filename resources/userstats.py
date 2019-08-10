@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import reqparse
 from resources.baseresource import ApiResource
 from flask import Response
 from mongoutils.mongoclient import MongoClient
@@ -52,8 +52,7 @@ class UserStats(ApiResource):
         if not data:
             return {"executed": False}
 
-        level = math.floor(data["exp"]/100) + 1
-        gain = random.randrange((level - 1) * 100, level * 100)
+        gain = random.randrange(5, 30)
         if "lastReward" in data:
             delta = (datetime.utcnow().timestamp() - data["lastReward"].timestamp()) / 3600
             print(delta)
@@ -65,3 +64,16 @@ class UserStats(ApiResource):
         else:
             self.db.update_one({"user": userId}, {"$inc": {"exp": gain}, "$set": {"lastReward": datetime.utcnow()}})
             return {"executed": True, "gained": gain}
+
+    def post(self, userId):  # change image
+        p = reqparse.RequestParser()
+        p.add_argument("path", required=True, location="json")
+        newimg = p.parse_args()
+
+        try:
+            self.db.update_one({"user": userId}, {"$set": {"avatar": newimg["path"]}})
+        except PyMongoError as e:
+            print(e)
+            return {"executed": False}
+
+        return {"executed": True}
