@@ -61,6 +61,7 @@ class UserMissionStats(ApiResource):
                     "complete": True
                 }
                 stats["exp"] += 40
+                stats["tutorial"] = True
             else:
                 return {"executed": False}
 
