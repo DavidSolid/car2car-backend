@@ -60,7 +60,8 @@ class UserMissionStats(ApiResource):
                     "value": 1,
                     "complete": True
                 }
-                stats["exp"] += 40
+                gained = 100
+                stats["exp"] += gained
                 stats["tutorial"] = True
             else:
                 return {"executed": False}
@@ -72,7 +73,8 @@ class UserMissionStats(ApiResource):
                     "value": 1,
                     "complete": True
                 }
-                stats["exp"] += 40
+                gained = 40
+                stats["exp"] += gained
             else:
                 return {"executed": False}
 
@@ -82,4 +84,4 @@ class UserMissionStats(ApiResource):
             print(e)
             return {"executed": False}
 
-        return {"executed": True, "gained": 40}
+        return {"executed": True, "gained": gained}

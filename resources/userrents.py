@@ -22,7 +22,7 @@ class UserRents(ApiResource):
         toinsert["date"] = json_util.loads(json.dumps(rent["date"]))
 
         try:
-            same_rent = self.db.find_one({"author": userId, "carId": toinsert["carId"]})
+            same_rent = self.db.find_one({"author": userId, "carId": toinsert["carId"], "isEnded": False})
             if same_rent is not None:
                 return {"executed": False}
             self.db.insert_one(toinsert)

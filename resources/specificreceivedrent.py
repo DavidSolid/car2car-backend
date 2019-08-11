@@ -149,7 +149,7 @@ class SpecificReceivedRent(ApiResource):
                     self.updateMissions(sender, "nSent", 1)
                     self.updateMissions(sender, "exp", 20*hours)
                     # receiver
-                    self.updateMissions(userId, "nReceiver", 1)
+                    self.updateMissions(userId, "nReceived", 1)
                     self.updateMissions(userId, "exp", 40*hours)
 
             except PyMongoError as e:
