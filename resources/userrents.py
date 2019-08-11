@@ -20,7 +20,11 @@ class UserRents(ApiResource):
         for k in ["addressedto", "carId", "isAccepted", "hasKey", "isEnded"]:  # aggiungere hasKey
             toinsert[k] = rent[k]
         toinsert["date"] = json_util.loads(json.dumps(rent["date"]))
+
         try:
+            same_rent = self.db.find_one({"author": userId, "carId": toinsert["carId"]})
+            if same_rent is not None:
+                return {"executed": False}
             self.db.insert_one(toinsert)
         except PyMongoError as e:
             print(e)
