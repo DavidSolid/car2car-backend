@@ -67,8 +67,8 @@ class UserMissionStats(ApiResource):
 
         if command["mission"] == "first_auto":
             # auto
-            if "5d4dd72775c90b34b4a85d7f" not in stats["missions"]:
-                stats["missions"]["5d4dd72775c90b34b4a85d7f"] = {
+            if "5d4d8f4c984d5d350c264be4" not in stats["missions"]:
+                stats["missions"]["5d4d8f4c984d5d350c264be4"] = {
                     "value": 1,
                     "complete": True
                 }
