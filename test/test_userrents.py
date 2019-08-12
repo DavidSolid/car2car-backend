@@ -1,9 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from unittest .mock import Mock
-from resources.userrents import UserRents
-import json
-from bson import json_util
+from resources.rents.userrents import UserRents
 from pymongo.errors import PyMongoError
 #@patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
 #patch('resources.usercars.UserCars.db.insert', Mock(return_value=""))

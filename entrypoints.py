@@ -1,14 +1,14 @@
-from resources.usercars import *
-from resources.specificusercar import *
-from resources.useractivecars import *
-from resources.dateactivecars import *
-from resources.userstats import *
-from resources.userrents import *
-from resources.receivedrents import *
-from resources.specificuserrent import *
-from resources.specificreceivedrent import *
-from resources.globalstats import *
-from resources.usermissionstats import *
+from resources.cars.usercars import *
+from resources.cars.specificusercar import *
+from resources.cars.useractivecars import *
+from resources.cars.dateactivecars import *
+from resources.stats.userstats import *
+from resources.rents.userrents import *
+from resources.rents.receivedrents import *
+from resources.rents.specificuserrent import *
+from resources.rents.specificreceivedrent import *
+from resources.stats.globalstats import *
+from resources.stats.usermissionstats import *
 
 
 class EntrypointsMapper:

@@ -28,4 +28,4 @@ class ApiResource(Resource):
 
             return wrapper
 
-        self.method_decorators = {'post': [authenticate], 'put': [authenticate], 'delete': [authenticate]}
+        self.method_decorators = {'put': [authenticate], 'delete': [authenticate]}

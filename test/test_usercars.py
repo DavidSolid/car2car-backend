@@ -1,10 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch
 from unittest .mock import Mock
-from resources.usercars import UserCars
-import json
+from resources.cars.usercars import UserCars
 from pymongo.errors import PyMongoError
-from parsers.carsparser import CarSchema
 
 
 @patch('mongoutils.mongoclient.MongoClient.connect', new=Mock())

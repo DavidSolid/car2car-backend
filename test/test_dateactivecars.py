@@ -1,8 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from unittest .mock import Mock
-from resources.dateactivecars import DateActiveCars
-import json
+from resources.cars.dateactivecars import DateActiveCars
 from pymongo.errors import PyMongoError
 
 

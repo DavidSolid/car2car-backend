@@ -1,13 +1,11 @@
 from unittest import TestCase
-from unittest.mock import patch, create_autospec
-from unittest.mock import Mock, MagicMock
-from resources.specificreceivedrent import SpecificReceivedRent
-import json
-from bson import json_util
-from bson.errors import InvalidId
+from unittest.mock import patch
+from unittest.mock import Mock
+from resources.rents.specificreceivedrent import SpecificReceivedRent
 from pymongo.errors import PyMongoError
 from werkzeug.exceptions import NotFound, BadRequest
-from mongoutils.mongoclient import MongoClient
+
+
 #@patch('parsers.carsparser.CarSchema.parse', new=Mock(return_value=carsample))
 #patch('resources.usercars.UserCars.db.insert', Mock(return_value=""))
 
